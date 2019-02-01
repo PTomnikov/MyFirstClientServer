@@ -23,18 +23,25 @@ class LED:
         self.__rate = start_rate
 
     def set_led_state(self, new_state):
-        """Установить состояние светодиона (1 аргумент)"""
+        """Установить состояние светодиона (1 аргумент)
+        state: string
+            Состояние диода: on, off
+        """
         if new_state in LED.__available_state:
             self.__state = new_state
             return "OK\n"
         return "FAILED\n"
 
     def get_led_state(self):
-        """Получить состояние светодиода (0 аргументов)"""
+        """Получить состояние светодиода (0 аргументов)
+        """
         return "OK " + self.__state + "\n"
 
     def set_led_color(self, new_color):
-        """Установить цвет светодиода (1 аргумент)"""
+        """Установить цвет светодиода (1 аргумент)
+        color: string
+            Цвет: red, green, blue
+        """
         if self.__state == "off":
             return "FAILED\n"
         if new_color in LED.__available_colors:
@@ -43,11 +50,15 @@ class LED:
         return "FAILED\n"
 
     def get_led_color(self):
-        """Получить цвет светодиода (0 аргументов)"""
+        """Получить цвет светодиода (0 аргументов)
+        """
         return "OK " + self.__color + "\n"
 
     def set_led_rate(self, new_rate):
-        """Установить частоту мерцания светодиода (1 аргумент)"""
+        """Установить частоту мерцания светодиода (1 аргумент)
+        rate: int
+            Частота мерцания диода от 0 до 5
+        """
         if self.__state == "off":
             return "FAILED\n"
         if new_rate in LED.__available_rate:
@@ -56,7 +67,8 @@ class LED:
         return "FAILED\n"
 
     def get_led_rate(self):
-        """Получить частоту мерцания светодиода (0 аргументов)"""
+        """Получить частоту мерцания светодиода (0 аргументов)
+        """
         return "OK " + str(self.__rate) + "\n"
 
 

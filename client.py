@@ -8,6 +8,11 @@ import json
 from collections import OrderedDict
 
 
+def print_command_list(command_dict):
+    for item in command_dict.items():
+        print(str(item[0]) + ". " + str(item[1][1]))
+
+
 client_sock = socket.socket()
 try:
     client_sock.settimeout(2)
@@ -26,21 +31,20 @@ try:
     for pair, i in zip(commands_with_doc.items(), available_numbers):
         key_command[i] = pair
     # Выводим на экран описания доступных команд и их номера
-    for item in key_command.items():
-        print(str(item[0]) + ". " + str(item[1][1]))
+    print_command_list(key_command)
 
     # Выбираем команду по номеру в списке
-    command = input("Enter number of command ('q' for exit, 'h' for command list): ")
-    while command != 'q':
+    while True:
+        command = input("Введите номер команды ('q' - выход, 'h' - список команд): ")
         if command == 'h':
-            for item in key_command.items():
-                print(str(item[0]) + ". " + str(item[1][1]))
-            command = input("Enter number of command ('q' for exit, 'h' for command list): ")
+            print_command_list(key_command)
             continue
+        if command == 'q':
+            break
         if command not in available_numbers:
-            command = input("Invalid input. Try again ('q' for exit, 'h' for command list): ")
+            print("Неправильный ввод")
             continue
-        arguments = input("Enter argument (if not required, just press Enter): ")
+        arguments = input("Введите значение аргумента (нажмите Enter, если не требуется): ")
         request = key_command[command][0] + " " + arguments + "\n"
         try:
             client_sock.send(request.encode())
@@ -50,7 +54,6 @@ try:
             break
         response = response[0:-1] # отрезаем \n
         print(response)
-        command = input("Enter number of command ('q' for exit, 'h' for command list): ")
 except ConnectionRefusedError:
     print("Can't connect. Server is offline.")
 except ConnectionAbortedError:
